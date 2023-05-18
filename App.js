@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import Constants from "expo-constants";
 import Svg, {Rect, Defs, LinearGradient as SVGGradient, Stop} from "react-native-svg";
@@ -26,6 +25,8 @@ export default function App() {
         return null;
     }
 
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+
     return (
         <View style={{height: "100%", width: "100%", flex: 1}}>
                 <LinearGradient
@@ -49,22 +50,10 @@ export default function App() {
 }
 
 const Card = () => {
-    const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
-    const [windowHeight, setWindowHeight] = useState(Dimensions.get('window').height);
-    const [text, setText] = useState("")
-
-    useEffect(() => {
-        Dimensions.addEventListener('change', ({window: {width, height}}) => {
-            setWindowHeight(height);
-            setWindowWidth(width);
-        });
-    });
-
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' , position: "absolute"}}>
-            <Svg height={windowHeight - Constants.statusBarHeight} width={windowWidth}>
+            <Svg height={windowForm().at(1) - Constants.statusBarHeight} width={windowForm().at(0)}>
                 <Defs>
                     <SVGGradient id="path" x1="0" y1="1" x2="0.5" y2="0">
                         <Stop offset="0" stopColor="#99ffff" stopOpacity="0.85" />
@@ -74,7 +63,7 @@ const Card = () => {
                 <Rect
                     y="0.5"
                     x="5%"
-                    width="90%"
+                    width={windowForm().at(0)/100*90}
                     height="97%"
                     rx={50}
                     ry={50}
@@ -85,12 +74,28 @@ const Card = () => {
     );
 };
 
+function windowForm(){
+    const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
+    const [windowHeight, setWindowHeight] = useState(Dimensions.get('window').height);
+
+    useEffect(() => {
+        Dimensions.addEventListener('change', ({ window: { width, height } }) => {
+            setWindowHeight(height);
+            setWindowWidth(width);
+        });
+    });
+
+    return window = [windowWidth, windowHeight];
+}
+
 const InputForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+
+
     return (
-        <View style={{position: "absolute", marginTop: Dimensions.get('window').height/100*18, width: "100%", flex: 1}}>
+        <View style={{position: "absolute", marginTop: windowForm().at(1)/100*18, width: "100%", flex: 1}}>
             <TextInput
                 label="Email"
                 value={email}
