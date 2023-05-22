@@ -6,9 +6,10 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 import {useCallback, useEffect, useState} from "react";
 import {BlurView} from "expo-blur";
 import { useFonts } from 'expo-font';
-import { TextInput } from "react-native-paper";
+import {Button, TextInput} from "react-native-paper";
 import * as SplashScreen from 'expo-splash-screen';
 import {transparent} from "react-native-paper/src/styles/themes/v2/colors";
+import {auth} from "./firebase/firebaseConfig";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -92,8 +93,6 @@ const InputForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
-
   return (
       <View style={{position: "absolute", marginTop: windowForm().at(1)/100*18, width: "100%", flex: 1}}>
         <TextInput
@@ -111,8 +110,16 @@ const InputForm = () => {
             onChangeText={password => setPassword(password)}
             mode="outlined"
             outlineColor="black"
+            text='white'
+            direction ='rtl'
+            underlineColor='transparent'
+            editable= {true}
+            secureTextEntry={true}
+            underlineColorAndroid={'rgba(0,0,0,0)'}
             style={{backgroundColor: transparent, color: "white", marginLeft: "10%", marginTop:"5%", width: "80%"}}
         />
+          <Button
+          onPress={()=> auth(email, password)}>Login</Button>
       </View>
   );
 };
