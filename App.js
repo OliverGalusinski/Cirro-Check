@@ -1,4 +1,4 @@
-import Registration from "./src/Authentication/Registration";
+import Registration from "./app/Authentication/Registration";
 
 function App() {
     return (

@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {Authentication} from "../../firebase/firebaseConfig";
 import {BackgroundWithCard} from "../Design/BackgroundCard";
 import {Button, TextInput} from "react-native-paper";
@@ -6,6 +6,7 @@ import {transparent} from "react-native-paper/src/styles/themes/v2/colors";
 import {useState} from "react";
 import {useFonts} from 'expo-font';
 import {windowForm} from "../Design/WindowForm";
+import {Link} from "expo-router";
 
 const Registration = () => {
     const [fontsLoaded] = useFonts({
@@ -19,6 +20,10 @@ const Registration = () => {
         <View style={{height: "100%", width: "100%", flex: 1}}>
             <BackgroundWithCard/>
             <InputForm/>
+            <Text>
+                Already have an account?
+            </Text>
+            <Link href={"/Authentication/Login"}>Login</Link>
         </View>
     );
 }
@@ -61,7 +66,6 @@ const InputForm = () => {
                     } catch (error) {
                         console.error(error);
                     }}}>Register</Button>
-
         </View>
     );
 };
