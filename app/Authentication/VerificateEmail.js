@@ -10,6 +10,19 @@ import {Button} from "react-native-paper";
 const VerificateEmail= () => {
     const email = auth.currentUser.email
     const router = useRouter();
+    // Navigation
+    const navigation = useNavigation();
+
+    // Effect
+    useEffect(() => {
+        navigation.addListener('beforeRemove', (e) => {
+            e.preventDefault();
+            console.log('onback');
+            // Do your stuff here
+            Authentication.signOut()
+            navigation.dispatch(e.data.action);
+        });
+    }, []);
 
     return(
         <View style={{height: "100%", width: "100%", flex: 1}}>
