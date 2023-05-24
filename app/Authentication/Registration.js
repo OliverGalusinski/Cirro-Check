@@ -1,12 +1,15 @@
-import {StyleSheet, Text, View} from 'react-native';
-import {Authentication} from "../../firebase/firebaseConfig";
+import {Text, View} from 'react-native';
+import {auth, Authentication} from "../../firebase/firebaseConfig";
 import {BackgroundWithCard} from "../Design/BackgroundCard";
 import {Button, TextInput} from "react-native-paper";
 import {transparent} from "react-native-paper/src/styles/themes/v2/colors";
 import {useState} from "react";
 import {useFonts} from 'expo-font';
 import {windowForm} from "../Design/WindowForm";
-import {Link} from "expo-router";
+import {Link, useRouter} from "expo-router";
+import Styles from "../Design/styles";
+import Svg, {Line} from "react-native-svg";
+import linking from "react-native-web/src/exports/Linking";
 
 const Registration = () => {
     const [fontsLoaded] = useFonts({
@@ -20,25 +23,20 @@ const Registration = () => {
         <View style={{height: "100%", width: "100%", flex: 1}}>
             <BackgroundWithCard/>
             <InputForm/>
-            <Text>
-                Already have an account?
-            </Text>
-            <Link href={"/Authentication/Login"}>Login</Link>
         </View>
     );
 }
-
 const InputForm = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const router = useRouter();
 
     return (
         <View style={{position: "absolute", marginTop: windowForm().at(1)/100*18, width: "100%", flex: 1}}>
             <TextInput
                 label="Email"
                 value={email}
-                onChangeText={value => {setEmail(value)
-                    console.log("new: " + value)}}
+                onChangeText={value => setEmail(value)}
                 editable={true}
                 mode="outlined"
                 outlineColor="black"
@@ -47,8 +45,7 @@ const InputForm = () => {
             <TextInput
                 label="Password"
                 value={password}
-                onChangeText={value => {setPassword(value)
-                    console.log("new: " + password)}}
+                onChangeText={value => setPassword(value)}
                 mode="outlined"
                 outlineColor="black"
                 text='white'
@@ -59,23 +56,33 @@ const InputForm = () => {
                 underlineColorAndroid={'rgba(0,0,0,0)'}
                 style={{backgroundColor: transparent, color: "white", marginLeft: "10%", marginTop:"5%", width: "80%"}}
             />
-            <Button
-                onPress={async () => {
-                    try {
-                        await Authentication.registerWithEmailAndPassword(email,password);
-                    } catch (error) {
-                        console.error(error);
-                    }}}>Register</Button>
+            <Button buttonColor="#2F80ED" textColor="white" style={{width:"80%", alignSelf:"center", marginTop:"5%"}}
+                    onPress={async() => handleRegisterPress(email,password,router)}>Register</Button>
+            <View style={{justifyContent:"center", alignItems:"center", marginTop: "1%"}}>
+                <Text style={{position:"absolute"}}>or</Text>
+                <Svg style={{position:"absolute"}} height="3%" width={windowForm().at(0)/100*90}>
+                    <Line x1="5%" y1="0" x2="45%" y2="0" stroke="white" strokeWidth="3" />
+                    <Line x1="55%" y1="0" x2="95%" y2="0" stroke="white" strokeWidth="3" />
+                </Svg>
+                <Text style={{marginTop: "10%", fontSize:12}}>
+                    Already have an account?
+                    <Link style={Styles.linkText} href={"/Authentication/Login"}> Sign in</Link>
+                </Text>
+            </View>
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
+async function handleRegisterPress(email, password, router) {
+    try {
+        await Authentication.registerWithEmailAndPassword(email, password);
+        const user = await auth.currentUser;
+        if (auth.currentUser != null) {
+            router.push("/Authentication/VerificateEmail");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 export default Registration;
