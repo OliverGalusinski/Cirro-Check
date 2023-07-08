@@ -4,7 +4,6 @@ import {Dimensions, Text, View} from "react-native";
 import {auth, Authentication} from "../../firebase/firebaseConfig";
 import {Background, Card} from "../Design/BackgroundCard";
 import Constants from "expo-constants";
-import {LoginForm} from "./Login";
 import {Button} from "react-native-paper";
 
 const VerificateEmail= () => {
@@ -34,7 +33,7 @@ const VerificateEmail= () => {
                 <Text style={{textAlign:"left", marginLeft: Dimensions.get('window').width/10, marginTop:"15%", fontSize: 20, color: "#f2f2f2", fontFamily: "AveriaLibre-Regular"}}>Please Verify your Email and Login</Text>
                 <Text style={{textAlign:"left", marginLeft:Dimensions.get('window').width/100*15, fontSize: 30, color: "#f2f2f2", fontFamily: "AveriaLibre-Regular"}}>{email}</Text>
                 <View style={{marginLeft:Dimensions.get('window').width/100*15}}>
-                    <LoginForm/>
+                    <Button onPress={e => {router.push("/Authentication/Login")}}>Login</Button>
                 </View>
                 <Button onPress={() => goBack(router)}>go back</Button>
             </View>

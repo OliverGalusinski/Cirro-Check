@@ -1,12 +1,13 @@
 import {View, Text} from "react-native";
 import React, {useEffect} from "react";
-import {useNavigation,Link} from "expo-router";
+import {useNavigation, useRouter} from "expo-router";
 import {BackgroundWithCard} from "../Design/BackgroundCard";
 import {windowForm} from "../Design/WindowForm";
-
+import {Button} from "react-native-paper";
 const Login = () => {
     // Navigation
     const navigation = useNavigation();
+    const router = useRouter();
 
     // Effect
     useEffect(() => {
@@ -21,13 +22,11 @@ const Login = () => {
         <View style={{height: "100%", width: "100%", flex: 1}}>
             <BackgroundWithCard/>
             <View style={{alignItems: "center", justifyContent:"center", position: "absolute", marginTop: windowForm().at(1)/100*38, width: "100%", flex: 1}}>
-                <Text>
-                    Login
-                </Text>
+                <LoginForm></LoginForm>
                 <Text>
                     No Account?
                 </Text>
-                <Link href={"/Authentication/Registration"}>Register</Link>
+                <Button onPress={e => {router.push("/Authentication/Registration")}}>Register</Button>
             </View>
         </View>
     )

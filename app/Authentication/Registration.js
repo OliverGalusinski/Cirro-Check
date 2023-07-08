@@ -9,7 +9,6 @@ import {windowForm} from "../Design/WindowForm";
 import {Link, useRouter} from "expo-router";
 import Styles from "../Design/styles";
 import Svg, {Line} from "react-native-svg";
-import linking from "react-native-web/src/exports/Linking";
 
 const Registration = () => {
     const [fontsLoaded] = useFonts({
