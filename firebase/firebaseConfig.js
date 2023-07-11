@@ -43,24 +43,33 @@ static registerWithPhone(phoneNumber){
 
 }
 
-    static signInWithEmailAndPassword(email, password){
+    static signInWithEmailAndPassword(email, password, router){
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
-                console.log("Signed in " + user.email)
+                if (user.emailVerified){
+                    console.log("Signed in " + user.email)
+                    router.push("Home/Homepage")
+                }else{
+                    router.push("Authentication/VerificateEmail")
+                    this.signOut()
+                    throw new Error('Please validate your Email!')
+                }
                 // ...
             })
             .catch((error) => {
-                const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log(errorMessage)
+                alert(errorMessage)
             });
     }
 
-    static signOut(){
+    static signOut(router, pushPath){
         signOut(auth).then(() => {
             console.log("Signed out!");
+            if(router !== undefined && pushPath !== undefined)
+                router.push(pushPath)
         }).catch((error) => {
             console.log(error.message);
         })

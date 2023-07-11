@@ -28,6 +28,7 @@ const Registration = () => {
 const InputForm = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
     const router = useRouter();
 
     return (
@@ -55,8 +56,27 @@ const InputForm = () => {
                 underlineColorAndroid={'rgba(0,0,0,0)'}
                 style={{backgroundColor: transparent, color: "white", marginLeft: "10%", marginTop:"5%", width: "80%"}}
             />
+            <TextInput
+                label="Confirm password"
+                value={confirmPassword}
+                onChangeText={value => setConfirmPassword(value)}
+                mode="outlined"
+                outlineColor="black"
+                text='white'
+                direction ='rtl'
+                underlineColor='transparent'
+                editable= {true}
+                secureTextEntry={true}
+                underlineColorAndroid={'rgba(0,0,0,0)'}
+                style={{backgroundColor: transparent, color: "white", marginLeft: "10%", marginTop:"5%", width: "80%"}}
+            />
             <Button buttonColor="#2F80ED" textColor="white" style={{width:"80%", alignSelf:"center", marginTop:"5%"}}
-                    onPress={async() => handleRegisterPress(email,password,router)}>Register</Button>
+                    onPress={async() => {
+                        if(confirmPassword === password)
+                            await handleRegisterPress(email, password, router)
+                        else
+                            alert('Passwords have to be equal!')
+                    }}>Register</Button>
             <View style={{justifyContent:"center", alignItems:"center", marginTop: "1%"}}>
                 <Text style={{position:"absolute"}}>or</Text>
                 <Svg style={{position:"absolute"}} height="3%" width={windowForm().at(0)/100*90}>
@@ -75,7 +95,6 @@ const InputForm = () => {
 async function handleRegisterPress(email, password, router) {
     try {
         await Authentication.registerWithEmailAndPassword(email, password);
-        const user = await auth.currentUser;
         if (auth.currentUser != null) {
             router.push("/Authentication/VerificateEmail");
         }

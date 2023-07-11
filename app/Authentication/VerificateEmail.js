@@ -35,7 +35,6 @@ const VerificateEmail= () => {
                 <View style={{marginLeft:Dimensions.get('window').width/100*15}}>
                     <Button onPress={e => {router.push("/Authentication/Login")}}>Login</Button>
                 </View>
-                <Button onPress={() => goBack(router)}>go back</Button>
             </View>
         </View>
     );
